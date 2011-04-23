@@ -18,7 +18,10 @@ applications:
             website:manage:
                 label: Manage
                 order: 100
-                mode: list_website
+                mode: list
+                args:
+                    _type: website
+                    blog_id: 0
                 view:
                     - system
                     - user
@@ -35,8 +38,10 @@ applications:
             user:manage:
                 label: Manage
                 order: 100
-                mode: list_author
+                mode: list
                 permission: administer
+                args:
+                    _type: author
                 view:
                     - system
                     - user
@@ -55,8 +60,6 @@ applications:
                 label: Templates
                 order: 100
                 mode: list_template
-                args:
-                    _type: author
                 permission: edit_templates
                 system_permission: edit_templates
                 view:
@@ -68,8 +71,6 @@ applications:
                 label: Widgets
                 order: 200
                 mode: list_template
-                args:
-                    _type: author
                 permission: edit_templates
                 system_permission: edit_templates
                 view:
@@ -81,8 +82,6 @@ applications:
                 label: Themes
                 order: 500
                 mode: list_theme
-                args:
-                    _type: author
                 permit_action: 'use_design:themes_menu'
                 view:
                     - system
@@ -108,7 +107,9 @@ applications:
             settings:role:
                 label: Roles
                 order: 300
-                mode: list_role
+                mode: list
+                args:
+                    _type: role
                 system_permission: administer
                 view:
                     - system
@@ -116,7 +117,9 @@ applications:
             settings:association:
                 label: Permissions
                 order: 400
-                mode: list_association
+                mode: list
+                args:
+                    _type: association
                 system_permission: administer
                 view:
                     - system
