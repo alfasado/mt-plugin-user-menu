@@ -174,7 +174,9 @@ applications:
             custom_fields:manage:
                 label: Manage
                 order: 100
-                mode: list_field
+                mode: list
+                args:
+                    _type: field
                 permission: administer_blog,edit_config
                 system_permission: administer
                 condition: sub { return MT->component( 'Commercial' ); }
