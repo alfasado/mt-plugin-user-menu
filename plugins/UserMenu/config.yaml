@@ -8,7 +8,7 @@ l10n_class: UserMenu::L10N
 description: <__trans phrase="Show System Menu on Your Dashboard.">
 config_settings:
     RemovableThisIsYouWidget:
-        default: 0
+        default: 1
 
 # Override core menus
 
@@ -153,7 +153,9 @@ applications:
             tools:activity_log:
                 label: Activity Log
                 order: 800
-                mode: view_log
+                mode: list
+                args:
+                    _type: log
                 permission: view_blog_log
                 system_permission: view_log
                 view:
@@ -216,30 +218,4 @@ applications:
                     - website
                     - blog
 callbacks:
-    pre_run: >
-            sub {
-                my $app = MT->instance;
-                if ( ref( $app ) ne 'MT::App::CMS' ) {
-                    return;
-                }
-                if (! MT->config( 'RemovableThisIsYouWidget' ) ) {
-                    return;
-                }
-                my $core = MT->component( 'core' );
-                my $r;
-                eval { $r = $core->registry( 'applications', 'cms', 'widgets' ) };
-                if (! $@ ){
-                    if ( $app->mode ne 'dashboard' ) {
-                        return;
-                    }
-                    my $plugin = MT->component( 'UserMenu' );
-                    require File::Spec;
-                    MT->config( 'AltTemplatePath', File::Spec->catdir( $plugin->path, 'alt-tmpl' ) );
-                        $r->{ this_is_you } = { label => 'This is You',
-                                                template => 'widget/this_is_you.tmpl',
-                                                handler  => "MT::CMS::Dashboard::this_is_you_widget",
-                                                set => 'sidebar',
-                                                singular => 1,
-                                                view => 'user', };
-                }
-            }
+    MT::App::CMS::pre_run: $usermenu::UserMenu::Plugin::_pre_run
