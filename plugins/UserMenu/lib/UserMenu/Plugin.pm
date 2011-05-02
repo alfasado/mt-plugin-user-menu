@@ -10,12 +10,19 @@ sub _pre_run {
     my $menus = MT->registry( 'applications', 'cms', 'menus' );
                 use Data::Dumper;
     for my $menu ( values( %$menus ) ) {
-        if ( my @scope = $menu->{ view } ) {
+        if ( $menu->{ view } ) {
             if ( ( ref ( $menu->{ view } )
                 && grep( $_ eq 'system', @{ $menu->{ view } } ) ) ) {
-                my @scope = $menu->{ view };
-                push ( @scope, 'user' );
-                $menu->{ view } = \@scope;
+                if ( ref ( $menu->{ view } ) ) { 
+                    my @scope = @{ $menu->{ view } };
+                    push ( @scope, 'user' );
+                    $menu->{ view } = \@scope;
+                    $menu->{ view } = [ 'system', 'user' ];
+                }
+            } else {
+                if ( $menu->{ view } eq 'system' ) {
+                    $menu->{ view } = [ 'system', 'user' ];
+                }
             }
         }
     }
