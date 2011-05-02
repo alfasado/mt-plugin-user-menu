@@ -8,12 +8,15 @@ sub _pre_run {
         return;
     }
     my $menus = MT->registry( 'applications', 'cms', 'menus' );
-    if ( MT->version_id !~ /^5\.0/ ) {
-        my $menus = MT->registry( 'applications', 'cms', 'menus' );
-        my @sys_menu = qw( blog:manage entry:manage page:manage asset:manage
-                          feedback:comment feedback:ping filter:member commenter:manage );
-        for my $menu ( @sys_menu ) {
-            $menus->{ $menu }->{ view } = [ 'user', 'system', 'website', 'blog' ];
+                use Data::Dumper;
+    for my $menu ( values( %$menus ) ) {
+        if ( my @scope = $menu->{ view } ) {
+            if ( ( ref ( $menu->{ view } )
+                && grep( $_ eq 'system', @{ $menu->{ view } } ) ) ) {
+                my @scope = $menu->{ view };
+                push ( @scope, 'user' );
+                $menu->{ view } = \@scope;
+            }
         }
     }
     if (! MT->config( 'RemovableThisIsYouWidget' ) ) {
