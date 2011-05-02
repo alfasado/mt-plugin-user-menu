@@ -16,7 +16,6 @@ sub _pre_run {
                     my @scope = @{ $menu->{ view } };
                     push ( @scope, 'user' );
                     $menu->{ view } = \@scope;
-                    $menu->{ view } = [ 'system', 'user' ];
                 }
             } else {
                 if ( $menu->{ view } eq 'system' ) {
