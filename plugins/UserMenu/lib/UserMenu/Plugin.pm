@@ -8,7 +8,6 @@ sub _pre_run {
         return;
     }
     my $menus = MT->registry( 'applications', 'cms', 'menus' );
-                use Data::Dumper;
     for my $menu ( values( %$menus ) ) {
         if ( $menu->{ view } ) {
             if ( ( ref ( $menu->{ view } )
